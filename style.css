@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+    border: 1px solid #000;
+    background: #fff;
+}
+
+.box .img-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.box .img-container {
+    text-align: center;
+}
+
+.box .info-container {
+    padding: 15px 25px 60px 25px;
+    position: relative;
+}
+
+.box .info-container i {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    color: black;
+}
+
+.box .info-container i:hover {
+    transform: scale(1.1);
+}
+
+body nav {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+body nav i {
+    margin-right: 15px;
+}
+
+.box {
+    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.300);
+    margin-bottom: 25px;
+}
+
+/*
+.box:hover {
+    transform: scale(1.1);
+}
+*/
