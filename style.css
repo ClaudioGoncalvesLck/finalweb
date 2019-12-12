@@ -77,3 +77,17 @@ nav img {
   align-items: center;
   word-break: break-all;
 }
+
+.form-control {
+  width: unset;
+}
+
+nav form .form-control.mr-sm-2 {
+  margin-right: 10px;
+}
+
+@media only screen and (max-width: 470px) {
+  .navbar {
+    justify-content: center;
+  }
+}
