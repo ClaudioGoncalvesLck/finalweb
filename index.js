@@ -1,4 +1,3 @@
-/*
 $(document).ready(function () {
   var bootstrapCol = "teste";
   var request = $.ajax({
@@ -9,13 +8,10 @@ $(document).ready(function () {
       for (let i = 0; i < data.length; i++) {
         console.log(i);
       }
-      $("#wrapper>.row").append($("<div>", {
-        class: bootstrapCol
-      }));
     }
   });
 });
-*/
+
 /*
 $(document).ready(function () {
   var bootstrapCol = "teste";
