@@ -42,9 +42,38 @@ nav img {
   text-shadow: 1px 1px 10px black;
 }
 
-.transfer {
+.card-bottom {
+  width: calc(100% - 1.25rem);
+  padding-right: 1.25rem;
   position: absolute;
   bottom: 25px;
-  right: 25px;
   color: white;
+  display: flex;
+  align-items: center;
+}
+
+.profile-img {
+  border-radius: 50%;
+}
+
+.card-text {
+  display: inline;
+  margin-left: 3px;
+  text-shadow: 1px 1px 10px black;
+}
+
+.transfer {
+  width: 40%;
+  text-align: right;
+}
+
+.transfer:hover > i {
+  margin-bottom: 10px;
+}
+
+.profile {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  word-break: break-all;
 }
