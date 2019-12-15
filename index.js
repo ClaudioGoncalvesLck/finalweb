@@ -2,45 +2,16 @@ $(document).ready(function() {
   var url =
     "https://api.unsplash.com/photos?order_by=latest&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
-<<<<<<< HEAD
-    success: function (data) {
-      var img = document.querySelectorAll(".card-img");
-      var title = document.querySelectorAll(".card-title");
-      var profile = document.querySelectorAll(".profile img");
-      /*
-      var download = document.querySelectorAll(".transfer a ");
-      */
-      console.log(location.href);
-      for (i = 0; i < img.length; i++) {
-        $(img[i]).attr("src", data[i].urls.regular);
-        $(title[i]).html(data[i].description);
-        $(profile[i]).attr("src", data[i].user.profile_image.small);
-      }
-=======
   $.ajax({
     url: url,
     type: "get",
     async: true,
     success: function(data, status, response) {
       getMoviesResult(data);
->>>>>>> master
     }
   });
 });
 
-<<<<<<< HEAD
-function nextPagina() {
-  var url = location.href;
-  var next = location.href + "/?page2";
-
-  $("#proximaPagina").attr("href", next)
-}
-
-/*
-$(document).ready(function () {
-  var request = $.ajax({
-    url: "https://api.unsplash.com/photos?order_by=latest&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578",
-=======
 function getMoviesResult(data) {
   var movie = {};
   for (var i = 0; i < data.length; i++) {
@@ -54,7 +25,6 @@ function getMoviesResult(data) {
     createMovieCard(movie);
   }
 }
->>>>>>> master
 
 function createMovieCard(data) {
   var father = $("#movies-content");

@@ -81,17 +81,12 @@ nav i {
   text-align: right;
 }
 
-<<<<<<< HEAD
-.transfer:hover>i {
-  margin-bottom: 10px;
-=======
 .transfer > a {
   color: white;
 }
 
 .transfer:hover > a {
   color: grey;
->>>>>>> master
 }
 
 .profile {
