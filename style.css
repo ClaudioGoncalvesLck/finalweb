@@ -57,6 +57,19 @@ nav i {
   border-radius: 50%;
 }
 
+.card-title {
+  display: block;
+  display: -webkit-box;
+  max-width: 400px;
+  height: 145px;
+  margin: 0 auto;
+  line-height: 1.4;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .card-text {
   display: inline;
   margin-left: 3px;
@@ -64,19 +77,28 @@ nav i {
 }
 
 .transfer {
-  width: 40%;
+  width: 20%;
   text-align: right;
 }
 
+<<<<<<< HEAD
 .transfer:hover>i {
   margin-bottom: 10px;
+=======
+.transfer > a {
+  color: white;
+}
+
+.transfer:hover > a {
+  color: grey;
+>>>>>>> master
 }
 
 .profile {
   width: 100%;
   display: flex;
   align-items: center;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .form-control {
