@@ -9,18 +9,22 @@ $(document).ready(function () {
       /*
       var download = document.querySelectorAll(".transfer a ");
       */
-      console.log(data);
+      console.log(location.href);
       for (i = 0; i < img.length; i++) {
         $(img[i]).attr("src", data[i].urls.regular);
         $(title[i]).html(data[i].description);
         $(profile[i]).attr("src", data[i].user.profile_image.small);
-        /*
-        $(download[i]).attr("href", data[i].links.download_location);
-        */
       }
     }
   });
 });
+
+function nextPagina() {
+  var url = location.href;
+  var next = location.href + "/?page2";
+
+  $("#proximaPagina").attr("href", next)
+}
 
 /*
 $(document).ready(function () {
