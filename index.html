@@ -3,7 +3,7 @@
 
 <head>
   <!-- Title -->
-  <title>Movies</title>
+  <title>photos</title>
 
   <!-- Icon -->
   <link rel="shortcut icon" href="icon.png" type="image/x-icon" />
@@ -24,12 +24,12 @@
   <script src="https://kit.fontawesome.com/90b939a6d9.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="getPhotos();">
   <!-- header -->
-  <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">
+  <nav class="navbar fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="" onclick="getPhotos();">
       <i class="fas fa-hat-wizard"></i>
-      Movies
+      Photos
     </a>
     <form class="form-inline">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
@@ -39,8 +39,29 @@
 
   <!-- content -->
   <div class="container-fluid">
-    <div class="row" id="movies-content">
+    <div class="row" id="photos-content">
 
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="searchError" tabindex="-1" role="dialog" aria-labelledby="searchErrorLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="searchErrorLabel">Search Error</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Please provide a valid search text.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 

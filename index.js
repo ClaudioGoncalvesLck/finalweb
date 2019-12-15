@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function getPhotos() {
   var url =
     "https://api.unsplash.com/photos?order_by=latest&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
@@ -7,27 +7,27 @@ $(document).ready(function() {
     type: "get",
     async: true,
     success: function(data, status, response) {
-      getMoviesResult(data);
+      getphotosResult(data);
     }
   });
-});
+}
 
-function getMoviesResult(data) {
-  var movie = {};
+function getphotosResult(data) {
+  var photo = {};
   for (var i = 0; i < data.length; i++) {
-    movie = {
+    photo = {
       img: data[i].urls.regular,
       imgAlt: data[i].alt_description,
       description: data[i].description ? data[i].description : "",
       userImg: data[i].user.profile_image.small,
       userName: data[i].user.name
     };
-    createMovieCard(movie);
+    createphotoCard(photo);
   }
 }
 
-function createMovieCard(data) {
-  var father = $("#movies-content");
+function createphotoCard(data) {
+  var father = $("#photos-content");
 
   var content = $(
     '      <div class="col-lg-3 col-md-4 col-sm-6"><div class="box card bg-dark text-white"><img src="' +
@@ -46,4 +46,36 @@ function createMovieCard(data) {
   );
 
   father.append(content);
+}
+
+$("form").submit(function(event) {
+  event.preventDefault();
+
+  if ($("input").val()) {
+    getPhotosBySearch($("input").val());
+  } else {
+    $("#searchError")
+      .modal()
+      .show();
+  }
+});
+
+function getPhotosBySearch(search) {
+  var url2 =
+    "https://api.unsplash.com/photos?page=1&query=" +
+    search +
+    "&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+
+  father = $("#photos-content")
+    .children("div")
+    .remove();
+
+  $.ajax({
+    url: url2,
+    type: "get",
+    async: true,
+    success: function(data, status, response) {
+      getphotosResult(data);
+    }
+  });
 }
