@@ -14,6 +14,7 @@ nav i {
 
 .container-fluid {
   padding: 48px;
+  margin-top: 48px;
 }
 
 .box {
@@ -101,6 +102,11 @@ nav i {
 
 nav form .form-control.mr-sm-2 {
   margin-right: 10px;
+}
+
+.pag {
+  display: flex;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 470px) {
