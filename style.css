@@ -109,6 +109,14 @@ nav form .form-control.mr-sm-2 {
   justify-content: center;
 }
 
+.page-empty {
+  text-align: center;
+}
+
+.number {
+  font-size: 100px;
+}
+
 @media only screen and (max-width: 470px) {
   .navbar {
     justify-content: center;

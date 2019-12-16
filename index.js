@@ -1,18 +1,17 @@
 function getPhotos() {
   var url =
-    "https://api.unsplash.com/photos?order_by=latest&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
-
+    "https://api.unsplash.com/photos?order_by=latest&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
   $.ajax({
     url: url,
     type: "get",
     async: true,
-    success: function (data, status, response) {
-      getphotosResult(data);
+    success: function(data, status, response) {
+      getPhotosResult(data);
     }
   });
 }
 
-function getphotosResult(data) {
+function getPhotosResult(data) {
   var photo = {};
   for (var i = 0; i < data.length; i++) {
     photo = {
@@ -22,37 +21,35 @@ function getphotosResult(data) {
       userImg: data[i].user.profile_image.small,
       userName: data[i].user.name
     };
-    createphotoCard(photo);
+    createPhotoCard(photo);
   }
 }
 
-function createphotoCard(data) {
+function createPhotoCard(data) {
   var father = $("#photos-content");
 
   var content = $(
     '      <div class="col-lg-3 col-md-4 col-sm-6"><div class="box card bg-dark text-white"><img src="' +
-    data.img +
-    '" class="card-img" alt="' +
-    data.imgAlt +
-    '" /><div class="card-img-overlay"><h5 class="card-title">' +
-    data.description +
-    '</h5><div class="card-bottom"><div class="profile"><img src="' +
-    data.userImg +
-    '" class="profile-img" alt="Autor" width="32" height="32" /><p class="card-text">' +
-    data.userName +
-    '</p></div><div class="transfer"><a href="' +
-    data.img +
-    '"><i class="fas fa-download"></i></a></div></div></div></div></div>'
+      data.img +
+      '" class="card-img" alt="' +
+      data.imgAlt +
+      '" /><div class="card-img-overlay"><h5 class="card-title">' +
+      data.description +
+      '</h5><div class="card-bottom"><div class="profile"><img src="' +
+      data.userImg +
+      '" class="profile-img" alt="Autor" width="32" height="32" /><p class="card-text">' +
+      data.userName +
+      '</p></div><div class="transfer"><a href="' +
+      data.img +
+      '"><i class="fas fa-download"></i></a></div></div></div></div></div>'
   );
 
   father.append(content);
 }
 
-function nextPage() {
+function nextPage() {}
 
-}
-
-$("form").submit(function (event) {
+$("form").submit(function(event) {
   event.preventDefault();
 
   if ($("input").val()) {
@@ -66,9 +63,9 @@ $("form").submit(function (event) {
 
 function getPhotosBySearch(search) {
   var url =
-    "https://api.unsplash.com/photos?page=1&query=" +
+    "https://api.unsplash.com/search/photos?page=1&query=" +
     search +
-    "&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+    "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
   father = $("#photos-content")
     .children("div")
@@ -78,8 +75,22 @@ function getPhotosBySearch(search) {
     url: url,
     type: "get",
     async: true,
-    success: function (data, status, response) {
-      getphotosResult(data);
+    success: function(data, status, response) {
+      if (data.total == 0) {
+        noResults();
+      } else {
+        getPhotosResult(data.results);
+      }
     }
   });
+}
+
+function noResults() {
+  var father = $("#empty-content");
+
+  var content = $('<h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2>');
+
+  father.append(content);
+
+  document.getElementById("pag").style.display = "none";
 }
