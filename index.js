@@ -1,6 +1,7 @@
+// response.getResponseHeader("X-Total") obter total de imagens
 function getPhotos() {
   var url =
-    "https://api.unsplash.com/photos?order_by=latest&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+    "https://api.unsplash.com/photos?order_by=latest&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
   $.ajax({
     url: url,
@@ -10,6 +11,7 @@ function getPhotos() {
       getphotosResult(data);
     }
   });
+
 }
 
 function getphotosResult(data) {
@@ -48,8 +50,55 @@ function createphotoCard(data) {
   father.append(content);
 }
 
-function nextPage() {
+function getNumeroPagina() {
+  var url = window.location.href;
 
+  var pageIndex = url.indexOf("page");
+  if (pageIndex == -1) {
+    return 1;
+  } else {
+    var pageString = url.substring(pageIndex);
+    var igualIndex = pageString.indexOf("=");
+    var pageNumber = pageString.substring(igualIndex + 1);
+
+    return pageNumber;
+  }
+
+}
+
+function changePage(type) {
+
+  var pageNumber = getNumeroPagina();
+
+  var newPageNumber = Number(pageNumber);
+
+  if (pageNumber >= 1 && type === "next") {
+    newPageNumber++;
+
+  } else if (pageNumber > 1 && type === "previous") {
+    newPageNumber--;
+
+  } else {
+    return;
+  }
+
+  $("#photos-content").children("div").remove();
+
+
+  window.history.pushState("", "", "?page=" + newPageNumber);
+
+
+  var url =
+    "https://api.unsplash.com/photos?page=" + newPageNumber + "&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+
+  $.ajax({
+    url: url,
+    type: "get",
+    async: true,
+    success: function (data, status, response) {
+      getphotosResult(data);
+    }
+  });
 }
 
 $("form").submit(function (event) {

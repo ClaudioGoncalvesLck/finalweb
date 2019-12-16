@@ -27,7 +27,7 @@
 <body onload="getPhotos();">
   <!-- header -->
   <nav class="navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="" onclick="getPhotos();">
+    <a class="navbar-brand" href="/" onclick="getPhotos();">
       <i class="fas fa-hat-wizard"></i>
       Photos
     </a>
@@ -45,8 +45,9 @@
     <div class="pag">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
-          <li class="page-item"><a class="page-link" onclick="" href="">Previous</a></li>
-          <li class="page-item"><a id="proximaPagina" class="page-link" onclick="nextPage()" href="#">Next</a></li>
+          <li class="page-item"><button id="" class="page-link" onclick="changePage('previous')">Previous</button></li>
+          <li class="page-item"><button id="proximaPagina" class="page-link" onclick="changePage('next')">Next</button>
+          </li>
         </ul>
       </nav>
     </div>
@@ -84,12 +85,12 @@
   <!-- Popper -->
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
+  </script>
 
   <!-- Bootstrap -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+  </script>
 
   <!-- Our JS -->
   <script src="index.js" type="text/javascript"></script>
