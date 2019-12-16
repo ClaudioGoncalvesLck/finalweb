@@ -1,25 +1,23 @@
 function getPhotos() {
   var url =
     "https://api.unsplash.com/photos?order_by=latest&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
-  $.ajax({
-    url: url,
-    type: "get",
-    async: true,
-    success: function(data, status, response) {
-      getPhotosResult(data);
-    }
-  });
+
+  callApi(url);
 }
 
 function getPhotosResult(data) {
+  var result = data;
+  if (data.results) {
+    result = data.results;
+  }
   var photo = {};
-  for (var i = 0; i < data.length; i++) {
+  for (var i = 0; i < result.length; i++) {
     photo = {
-      img: data[i].urls.regular,
-      imgAlt: data[i].alt_description,
-      description: data[i].description ? data[i].description : "",
-      userImg: data[i].user.profile_image.small,
-      userName: data[i].user.name
+      img: result[i].urls.regular,
+      imgAlt: result[i].alt_description,
+      description: result[i].description ? result[i].description : "",
+      userImg: result[i].user.profile_image.small,
+      userName: result[i].user.name
     };
     createPhotoCard(photo);
   }
@@ -71,18 +69,7 @@ function getPhotosBySearch(search) {
     .children("div")
     .remove();
 
-  $.ajax({
-    url: url,
-    type: "get",
-    async: true,
-    success: function(data, status, response) {
-      if (data.total == 0) {
-        noResults();
-      } else {
-        getPhotosResult(data.results);
-      }
-    }
-  });
+  callApi(url);
 }
 
 function noResults() {
@@ -93,4 +80,19 @@ function noResults() {
   father.append(content);
 
   document.getElementById("pag").style.display = "none";
+}
+
+function callApi(url) {
+  $.ajax({
+    url: url,
+    type: "get",
+    async: true,
+    success: function(data, status, response) {
+      if (data.total == 0) {
+        noResults();
+      } else {
+        getPhotosResult(data);
+      }
+    }
+  });
 }
