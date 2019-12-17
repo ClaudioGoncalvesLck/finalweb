@@ -45,7 +45,55 @@ function createPhotoCard(data) {
   father.append(content);
 }
 
-function nextPage() {}
+function getNextNumberPage(type) {
+  var url = window.location.href;
+
+  var pageNumber;
+
+  var pageIndex = url.indexOf("page");
+  if (pageIndex == -1) {
+    pageNumber = 1;
+  } else {
+    var pageString = url.substring(pageIndex);
+    var igualIndex = pageString.indexOf("=");
+    pageNumber = pageString.substring(igualIndex + 1);
+  }
+
+  pageNumber = Number(pageNumber);
+
+  if (pageNumber >= 1 && type === "next") {
+    pageNumber++;
+    return pageNumber;
+  } else if (pageNumber > 1 && type === "previous") {
+    pageNumber--;
+    return pageNumber;
+  }
+}
+
+function changePage(type) {
+  var page = getNextNumberPage(type);
+
+  if (!page) {
+    return;
+  }
+
+  if ($("input").val()) {
+    getPhotosBySearch($("input").val(), page);
+  } else {
+    $("#photos-content")
+      .children("div")
+      .remove();
+
+    window.history.pushState("", "", "?page=" + page);
+
+    var url =
+      "https://api.unsplash.com/photos?page=" +
+      page +
+      "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+
+    callApi(url);
+  }
+}
 
 $("form").submit(function(event) {
   event.preventDefault();
@@ -59,9 +107,17 @@ $("form").submit(function(event) {
   }
 });
 
-function getPhotosBySearch(search) {
+function getPhotosBySearch(search, page) {
+  if (!page) {
+    page = 1;
+  }
+
+  window.history.pushState("", "", "?page=" + page);
+
   var url =
-    "https://api.unsplash.com/search/photos?page=1&query=" +
+    "https://api.unsplash.com/search/photos?page= " +
+    page +
+    " &query=" +
     search +
     "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
@@ -88,6 +144,7 @@ function callApi(url) {
     type: "get",
     async: true,
     success: function(data, status, response) {
+      console.log(data);
       if (data.total == 0) {
         noResults();
       } else {
