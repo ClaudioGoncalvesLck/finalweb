@@ -56,7 +56,12 @@ function getNextNumberPage(type) {
   } else {
     var pageString = url.substring(pageIndex);
     var igualIndex = pageString.indexOf("=");
-    pageNumber = pageString.substring(igualIndex + 1);
+    var queryIndex = pageString.indexOf("&query");
+    if (queryIndex == -1) {
+      pageNumber = pageString.substring(igualIndex + 1);
+    } else {
+      pageNumber = pageString.substring(igualIndex + 1, queryIndex);
+    }
   }
 
   pageNumber = Number(pageNumber);
@@ -70,15 +75,35 @@ function getNextNumberPage(type) {
   }
 }
 
+function getQuery() {
+  var url = window.location.href;
+
+  var query;
+
+  var queryIndex = url.indexOf("query");
+  if (queryIndex == -1) {
+    query = null;
+  } else {
+    var queryString = url.substring(queryIndex);
+
+    var igualIndex = queryString.indexOf("=");
+    query = queryString.substring(igualIndex + 1);
+  }
+
+  return query;
+}
+
 function changePage(type) {
   var page = getNextNumberPage(type);
+
+  var query = getQuery();
 
   if (!page) {
     return;
   }
 
-  if ($("input").val()) {
-    getPhotosBySearch($("input").val(), page);
+  if (query) {
+    getPhotosBySearch(query, page);
   } else {
     $("#photos-content")
       .children("div")
@@ -107,18 +132,18 @@ $("form").submit(function(event) {
   }
 });
 
-function getPhotosBySearch(search, page) {
+function getPhotosBySearch(query, page) {
   if (!page) {
     page = 1;
   }
 
-  window.history.pushState("", "", "?page=" + page);
+  window.history.pushState("", "", "?page=" + page + "&query=" + query);
 
   var url =
     "https://api.unsplash.com/search/photos?page= " +
     page +
     " &query=" +
-    search +
+    query +
     "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
   father = $("#photos-content")
