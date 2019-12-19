@@ -11,8 +11,10 @@ function callApi(url) {
     type: "get",
     async: true,
     success: function (data, status, response) {
-      console.log(data);
-      if (data.total == 0) {
+      if (data.total_pages) {
+        localStorage.setItem("total_pages", data.total_pages);
+      }
+      if (data.total == 0 || data.results == 0) {
         noResults();
       } else {
         getPhotosResult(data);
@@ -77,7 +79,7 @@ function changePage(type) {
 
   var query = getQuery();
 
-  if (!page) {
+  if (!page || localStorage.getItem("total_pages") < page) {
     return;
   }
 
@@ -151,7 +153,7 @@ $("form").submit(function (event) {
   event.preventDefault();
 
   if ($("input").val()) {
-    getPhotosBySearch($("input").val());
+    getPhotosBySearch($("input").val(), null);
   } else {
     $("#searchError")
       .modal()
