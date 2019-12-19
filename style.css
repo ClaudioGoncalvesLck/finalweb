@@ -81,11 +81,11 @@ nav i {
   text-align: right;
 }
 
-.transfer > a {
+.transfer>a {
   color: white;
 }
 
-.transfer:hover > a {
+.transfer:hover>a {
   color: grey;
 }
 

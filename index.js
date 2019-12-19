@@ -10,7 +10,7 @@ function callApi(url) {
     url: url,
     type: "get",
     async: true,
-    success: function(data, status, response) {
+    success: function (data, status, response) {
       console.log(data);
       if (data.total == 0) {
         noResults();
@@ -39,12 +39,13 @@ function getPhotosResult(data) {
   var photo = {};
   for (var i = 0; i < result.length; i++) {
     photo = {
-      img: result[i].urls.regular,
+      img: result[i].urls.raw + "&fit=crop&w=500&h=500",
       imgAlt: result[i].alt_description,
       description: result[i].description ? result[i].description : "",
       userImg: result[i].user.profile_image.small,
       userName: result[i].user.name
     };
+
     createPhotoCard(photo);
   }
 }
@@ -54,18 +55,18 @@ function createPhotoCard(data) {
 
   var content = $(
     '      <div class="col-lg-3 col-md-4 col-sm-6"><div class="box card bg-dark text-white"><img src="' +
-      data.img +
-      '" class="card-img" alt="' +
-      data.imgAlt +
-      '" /><div class="card-img-overlay"><h5 class="card-title">' +
-      data.description +
-      '</h5><div class="card-bottom"><div class="profile"><img src="' +
-      data.userImg +
-      '" class="profile-img" alt="Autor" width="32" height="32" /><p class="card-text">' +
-      data.userName +
-      '</p></div><div class="transfer"><a href="' +
-      data.img +
-      '"><i class="fas fa-download"></i></a></div></div></div></div></div>'
+    data.img +
+    '" class="card-img" alt="' +
+    data.imgAlt +
+    '" /><div class="card-img-overlay"><h5 class="card-title">' +
+    data.description +
+    '</h5><div class="card-bottom"><div class="profile"><img src="' +
+    data.userImg +
+    '" class="profile-img" alt="Autor" width="32" height="32" /><p class="card-text">' +
+    data.userName +
+    '</p></div><div class="transfer"><a href="' +
+    data.img +
+    '"><i class="fas fa-download"></i></a></div></div></div></div></div>'
   );
 
   father.append(content);
@@ -146,7 +147,7 @@ function getQuery() {
   return query;
 }
 
-$("form").submit(function(event) {
+$("form").submit(function (event) {
   event.preventDefault();
 
   if ($("input").val()) {
