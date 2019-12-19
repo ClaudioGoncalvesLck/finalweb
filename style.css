@@ -41,6 +41,7 @@ nav i {
   opacity: 1;
   transition: opacity 500ms;
   text-shadow: 1px 1px 10px black;
+  cursor: context-menu;
 }
 
 .card-bottom {
