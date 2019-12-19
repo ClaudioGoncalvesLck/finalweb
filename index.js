@@ -11,8 +11,10 @@ function callApi(url) {
     type: "get",
     async: true,
     success: function(data, status, response) {
-      console.log(data);
-      if (data.total == 0) {
+      if (data.total_pages) {
+        localStorage.setItem("total_pages", data.total_pages);
+      }
+      if (data.total == 0 || data.results == 0) {
         noResults();
       } else {
         getPhotosResult(data);
@@ -39,7 +41,7 @@ function getPhotosResult(data) {
   var photo = {};
   for (var i = 0; i < result.length; i++) {
     photo = {
-      img: result[i].urls.regular,
+      img: result[i].urls.raw + "&fit=crop&w=500&h=500",
       imgAlt: result[i].alt_description,
       description: result[i].description ? result[i].description : "",
       userImg: result[i].user.profile_image.small,
@@ -76,7 +78,7 @@ function changePage(type) {
 
   var query = getQuery();
 
-  if (!page) {
+  if (!page || localStorage.getItem("total_pages") < page) {
     return;
   }
 
@@ -150,7 +152,7 @@ $("form").submit(function(event) {
   event.preventDefault();
 
   if ($("input").val()) {
-    getPhotosBySearch($("input").val());
+    getPhotosBySearch($("input").val(), null);
   } else {
     $("#searchError")
       .modal()
