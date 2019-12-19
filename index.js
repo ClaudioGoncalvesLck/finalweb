@@ -5,6 +5,32 @@ function getPhotos() {
   callApi(url);
 }
 
+function callApi(url) {
+  $.ajax({
+    url: url,
+    type: "get",
+    async: true,
+    success: function(data, status, response) {
+      console.log(data);
+      if (data.total == 0) {
+        noResults();
+      } else {
+        getPhotosResult(data);
+      }
+    }
+  });
+}
+
+function noResults() {
+  var father = $("#empty-content");
+
+  var content = $('<h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2>');
+
+  father.append(content);
+
+  document.getElementById("pag").style.display = "none";
+}
+
 function getPhotosResult(data) {
   var result = data;
   if (data.results) {
@@ -43,6 +69,33 @@ function createPhotoCard(data) {
   );
 
   father.append(content);
+}
+
+function changePage(type) {
+  var page = getNextNumberPage(type);
+
+  var query = getQuery();
+
+  if (!page) {
+    return;
+  }
+
+  if (query) {
+    getPhotosBySearch(query, page);
+  } else {
+    $("#photos-content")
+      .children("div")
+      .remove();
+
+    window.history.pushState("", "", "?page=" + page);
+
+    var url =
+      "https://api.unsplash.com/photos?page=" +
+      page +
+      "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+
+    callApi(url);
+  }
 }
 
 function getNextNumberPage(type) {
@@ -93,33 +146,6 @@ function getQuery() {
   return query;
 }
 
-function changePage(type) {
-  var page = getNextNumberPage(type);
-
-  var query = getQuery();
-
-  if (!page) {
-    return;
-  }
-
-  if (query) {
-    getPhotosBySearch(query, page);
-  } else {
-    $("#photos-content")
-      .children("div")
-      .remove();
-
-    window.history.pushState("", "", "?page=" + page);
-
-    var url =
-      "https://api.unsplash.com/photos?page=" +
-      page +
-      "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
-
-    callApi(url);
-  }
-}
-
 $("form").submit(function(event) {
   event.preventDefault();
 
@@ -151,30 +177,4 @@ function getPhotosBySearch(query, page) {
     .remove();
 
   callApi(url);
-}
-
-function noResults() {
-  var father = $("#empty-content");
-
-  var content = $('<h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2>');
-
-  father.append(content);
-
-  document.getElementById("pag").style.display = "none";
-}
-
-function callApi(url) {
-  $.ajax({
-    url: url,
-    type: "get",
-    async: true,
-    success: function(data, status, response) {
-      console.log(data);
-      if (data.total == 0) {
-        noResults();
-      } else {
-        getPhotosResult(data);
-      }
-    }
-  });
 }
