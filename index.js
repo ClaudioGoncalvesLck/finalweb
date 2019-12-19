@@ -41,7 +41,7 @@ function getPhotosResult(data) {
   var photo = {};
   for (var i = 0; i < result.length; i++) {
     photo = {
-      img: result[i].urls.regular,
+      img: result[i].urls.raw + "&fit=crop&w=500&h=500",
       imgAlt: result[i].alt_description,
       description: result[i].description ? result[i].description : "",
       userImg: result[i].user.profile_image.small,
