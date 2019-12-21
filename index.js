@@ -19,9 +19,6 @@ function callApi(url) {
     type: "get",
     async: true,
     success: function(data, status, response) {
-      if (data.total_pages) {
-        localStorage.setItem("total_pages", data.total_pages);
-      }
       if (data.total == 0 || data.results == 0) {
         noResults();
       } else {
@@ -42,6 +39,15 @@ function noResults() {
 }
 
 function getPhotosResult(data) {
+  if (data.total_pages) {
+    var page = getNextNumberPage("next");
+
+    if (data.total_pages < page) {
+      document.getElementById("btn-next").disabled = true;
+    } else {
+      document.getElementById("btn-next").disabled = false;
+    }
+  }
   var result = data;
   if (data.results) {
     result = data.results;
