@@ -6,6 +6,14 @@ function getPhotos() {
 }
 
 function callApi(url) {
+  father = $("#photos-content")
+    .children("div")
+    .remove();
+
+  father = $("#empty-content")
+    .children("div")
+    .remove();
+
   $.ajax({
     url: url,
     type: "get",
@@ -26,7 +34,7 @@ function callApi(url) {
 function noResults() {
   var father = $("#empty-content");
 
-  var content = $('<h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2>');
+  var content = $('<div><h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2></div>');
 
   father.append(content);
 
@@ -85,10 +93,6 @@ function changePage(type) {
   if (query) {
     getPhotosBySearch(query, page);
   } else {
-    $("#photos-content")
-      .children("div")
-      .remove();
-
     window.history.pushState("", "", "?page=" + page);
 
     var url =
@@ -151,12 +155,19 @@ function getQuery() {
 $("form").submit(function(event) {
   event.preventDefault();
 
-  if ($("input").val()) {
-    getPhotosBySearch($("input").val(), null);
-  } else {
+  if (!$("input").val()) {
     $("#searchError")
       .modal()
       .show();
+    return;
+  }
+
+  var query = getQuery();
+
+  if ($("input").val() === query) {
+    return;
+  } else {
+    getPhotosBySearch($("input").val(), null);
   }
 });
 
@@ -173,10 +184,6 @@ function getPhotosBySearch(query, page) {
     " &query=" +
     query +
     "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
-
-  father = $("#photos-content")
-    .children("div")
-    .remove();
 
   callApi(url);
 }
