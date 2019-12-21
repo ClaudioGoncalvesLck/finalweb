@@ -1,19 +1,30 @@
-function getPhotos() {
+function getPhotos(page) {
+  if (!page) {
+    page = "1";
+  }
+
   var url =
-    "https://api.unsplash.com/photos?order_by=latest&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+    "https://api.unsplash.com/photos?page=" +
+    page +
+    "&order_by=latest&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
 
   callApi(url);
 }
 
 function callApi(url) {
+  father = $("#photos-content")
+    .children("div")
+    .remove();
+
+  father = $("#empty-content")
+    .children("div")
+    .remove();
+
   $.ajax({
     url: url,
     type: "get",
     async: true,
     success: function(data, status, response) {
-      if (data.total_pages) {
-        localStorage.setItem("total_pages", data.total_pages);
-      }
       if (data.total == 0 || data.results == 0) {
         noResults();
       } else {
@@ -24,20 +35,38 @@ function callApi(url) {
 }
 
 function noResults() {
+  document.getElementById("pag").style.display = "none";
+
   var father = $("#empty-content");
 
-  var content = $('<h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2>');
+  var content = $('<div><h1>Nothing to show here :/</h1><h1 class="number">0</h1><h2>Results</h2></div>');
 
   father.append(content);
-
-  document.getElementById("pag").style.display = "none";
 }
 
 function getPhotosResult(data) {
+  var page = getNextNumberPage("next");
+
+  if (page == 2) {
+    document.getElementById("btn-previous").disabled = true;
+  } else {
+    document.getElementById("btn-previous").disabled = false;
+  }
+
+  if (data.total_pages) {
+    if (data.total_pages < page) {
+      document.getElementById("btn-next").disabled = true;
+    } else {
+      document.getElementById("btn-next").disabled = false;
+    }
+  }
+
   var result = data;
+
   if (data.results) {
     result = data.results;
   }
+
   var photo = {};
   for (var i = 0; i < result.length; i++) {
     photo = {
@@ -78,25 +107,12 @@ function changePage(type) {
 
   var query = getQuery();
 
-  if (!page || localStorage.getItem("total_pages") < page) {
-    return;
-  }
-
   if (query) {
     getPhotosBySearch(query, page);
   } else {
-    $("#photos-content")
-      .children("div")
-      .remove();
-
     window.history.pushState("", "", "?page=" + page);
 
-    var url =
-      "https://api.unsplash.com/photos?page=" +
-      page +
-      "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
-
-    callApi(url);
+    getPhotos(page);
   }
 }
 
@@ -118,8 +134,6 @@ function getNextNumberPage(type) {
       pageNumber = pageString.substring(igualIndex + 1, queryIndex);
     }
   }
-
-  pageNumber = Number(pageNumber);
 
   if (pageNumber >= 1 && type === "next") {
     pageNumber++;
@@ -151,12 +165,19 @@ function getQuery() {
 $("form").submit(function(event) {
   event.preventDefault();
 
-  if ($("input").val()) {
-    getPhotosBySearch($("input").val(), null);
-  } else {
+  if (!$("input").val()) {
     $("#searchError")
       .modal()
       .show();
+    return;
+  }
+
+  var query = getQuery();
+
+  if ($("input").val() === query) {
+    return;
+  } else {
+    getPhotosBySearch($("input").val(), null);
   }
 });
 
@@ -173,10 +194,6 @@ function getPhotosBySearch(query, page) {
     " &query=" +
     query +
     "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
-
-  father = $("#photos-content")
-    .children("div")
-    .remove();
 
   callApi(url);
 }
