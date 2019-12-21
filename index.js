@@ -39,9 +39,15 @@ function noResults() {
 }
 
 function getPhotosResult(data) {
-  if (data.total_pages) {
-    var page = getNextNumberPage("next");
+  var page = getNextNumberPage("next");
 
+  if (page == 2) {
+    document.getElementById("btn-previous").disabled = true;
+  } else {
+    document.getElementById("btn-previous").disabled = false;
+  }
+
+  if (data.total_pages) {
     if (data.total_pages < page) {
       document.getElementById("btn-next").disabled = true;
     } else {
@@ -91,10 +97,6 @@ function changePage(type) {
   var page = getNextNumberPage(type);
 
   var query = getQuery();
-
-  if (!page || localStorage.getItem("total_pages") < page) {
-    return;
-  }
 
   if (query) {
     getPhotosBySearch(query, page);
