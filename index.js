@@ -1,12 +1,14 @@
+const util = {
+  API_URL: "https://api.unsplash.com/",
+  CLIENT_ID: "dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578"
+};
+
 function getPhotos(page) {
   if (!page) {
     page = "1";
   }
 
-  var url =
-    "https://api.unsplash.com/photos?page=" +
-    page +
-    "&order_by=latest&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+  var url = util.API_URL + "photos?page=" + page + "&order_by=latest&per_page=24&client_id=" + util.CLIENT_ID;
 
   callApi(url);
 }
@@ -25,7 +27,7 @@ function callApi(url) {
     type: "get",
     async: true,
     success: function(data, status, response) {
-      if (data.total == 0 || data.results == 0) {
+      if (data.total == 0 || data.results == 0 || status !== "success") {
         noResults();
       } else {
         getPhotosResult(data);
@@ -74,7 +76,8 @@ function getPhotosResult(data) {
       imgAlt: result[i].alt_description,
       description: result[i].description ? result[i].description : "",
       userImg: result[i].user.profile_image.small,
-      userName: result[i].user.name
+      userName: result[i].user.name,
+      download: result[i].urls.regular
     };
     createPhotoCard(photo);
   }
@@ -94,9 +97,9 @@ function createPhotoCard(data) {
       data.userImg +
       '" class="profile-img" alt="Autor" width="32" height="32" /><p class="card-text">' +
       data.userName +
-      '</p></div><div class="transfer"><a href="' +
-      data.img +
-      '"><i class="fas fa-download"></i></a></div></div></div></div></div>'
+      '</p></div><div class="transfer"><a target="_blank" href="' +
+      data.download +
+      '" ><i class="fas fa-download"></i></a></div></div></div></div></div>'
   );
 
   father.append(content);
@@ -189,11 +192,7 @@ function getPhotosBySearch(query, page) {
   window.history.pushState("", "", "?page=" + page + "&query=" + query);
 
   var url =
-    "https://api.unsplash.com/search/photos?page= " +
-    page +
-    " &query=" +
-    query +
-    "&per_page=24&client_id=dd4e1cb73ca3a1036d4e98d26f72a439141dc17039e1ae79b7bc2a23f3488578";
+    util.API_URL + "search/photos?page=" + page + "&query=" + query + "&per_page=24&client_id=" + util.CLIENT_ID;
 
   callApi(url);
 }
