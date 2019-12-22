@@ -24,6 +24,7 @@
   <script src="https://kit.fontawesome.com/90b939a6d9.js" crossorigin="anonymous"></script>
 </head>
 
+<!-- Quando a página é carregada é executado a função JS getPhotos -->
 <body onload="getPhotos();">
   <!-- header -->
   <nav class="navbar fixed-top navbar-dark bg-dark">
@@ -39,14 +40,18 @@
 
   <!-- content -->
   <div class="container-fluid">
+
+    <!-- Aqui serão carregadas as fotos -->
     <div class="row" id="photos-content">
 
     </div>
 
+    <!-- Caso a chamada api não devolva resultados será carregado aqui uma página direcionada para tal -->
     <div class="page-empty" id="empty-content">
 
     </div>
 
+    <!-- Butões de paginação -->
     <div class="pag" id="pag">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -60,6 +65,7 @@
   </div>
 
   <!-- Modal -->
+  <!-- Esta modal apenas irá aparecer se o utilizador executar a procura sem escrever nada na caixa de texto -->
   <div class="modal fade" id="searchError" tabindex="-1" role="dialog" aria-labelledby="searchErrorLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
